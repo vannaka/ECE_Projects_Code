@@ -1,5 +1,5 @@
 #include "lck_cntrlr.h"
-#include "mtr_cntrl.h"
+#include "mtr_cntrl/mtr_cntrl.h"
 
 static lck_cntrlr_state_t lck_curr_state;
 static lck_cntrlr_state_t lck_next_state;

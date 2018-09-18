@@ -1,4 +1,4 @@
-#include "lck_cntrlr.h"
+#include "lck_cntrlr/lck_cntrlr.h"
 
 // the setup function runs once when you press reset or power the board
 void setup()
