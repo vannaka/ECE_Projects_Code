@@ -10,10 +10,10 @@ extern "C" {
 
 typedef uint8_t lck_cntrlr_state_t;
 enum
-{
+    {
     LCK_CNTRLR_STATE_LOCKED,
     LCK_CNTRLR_STATE_UNLOCKED
-};
+    };
 
 void lck_cntrlr_init( void );
 void lck_cntrlr_proc( void );

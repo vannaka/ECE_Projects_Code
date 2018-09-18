@@ -12,7 +12,7 @@ void mtr_cntrl_set_state( mtr_cntrl_state_t state )
     mtr_state = state;
     
     switch( mtr_state )
-    {
+        {
         case MTR_CNTRL_STATE_FORWARD:
             // TODO: Set motor to full speed CW
             break;
@@ -24,7 +24,7 @@ void mtr_cntrl_set_state( mtr_cntrl_state_t state )
         case MTR_CNTRL_STATE_STOPPED:
             // TODO: Set motor to off
             break;
-    }
+        }
 }
 
 mtr_cntrl_state_t mtr_cntrl_get_state( void )
