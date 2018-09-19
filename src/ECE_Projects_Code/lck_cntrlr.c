@@ -59,6 +59,7 @@ void lck_cntrlr_proc( void )
                 // Go to next state.
                 intrnl_curr_state = UNLOCKED_TO_LOCKED;
                 }
+            break;
 
         // Lock is in transit to the locked position
         case UNLOCKED_TO_LOCKED:
