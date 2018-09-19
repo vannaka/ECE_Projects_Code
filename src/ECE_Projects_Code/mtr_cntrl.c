@@ -1,7 +1,13 @@
 #include "mtr_cntrl.h"
 
+/******************************************************************************
+*                               Global Variables
+******************************************************************************/
 static mtr_cntrl_state_t mtr_state;
 
+/******************************************************************************
+*                                 Procedures
+******************************************************************************/
 void mtr_cntrl_init( void )
 {
     mtr_state = MTR_CNTRL_STATE_STOPPED;
@@ -14,11 +20,11 @@ void mtr_cntrl_set_state( mtr_cntrl_state_t state )
     switch( mtr_state )
         {
         case MTR_CNTRL_STATE_FORWARD:
-            // TODO: Set motor to full speed CW
+            // TODO: Set motor to CW
             break;
 
         case MTR_CNTRL_STATE_REVERSE:
-            // TODO: Set motor to full speed CCW
+            // TODO: Set motor to full CCW
             break;
 
         case MTR_CNTRL_STATE_STOPPED:
@@ -34,13 +40,13 @@ mtr_cntrl_state_t mtr_cntrl_get_state( void )
 
 bool mtr_cntrl_get_limit_cw( void )
 {
-    // TODO: read the limit switch pin and return true if tripped
+    // TODO: read the limit pin and return true if tripped
     return true;
 }
 
 bool mtr_cntrl_get_limit_ccw( void )
 {
-    // TODO: read the limit switch pin and return true if tripped
+    // TODO: read the limit pin and return true if tripped
     return true;
 }
 
