@@ -19,11 +19,11 @@ void mtr_cntrl_set_state( mtr_cntrl_state_t state )
     
     switch( mtr_state )
         {
-        case MTR_CNTRL_STATE_FORWARD:
+        case MTR_CNTRL_STATE_CW:
             // TODO: Set motor to CW
             break;
 
-        case MTR_CNTRL_STATE_REVERSE:
+        case MTR_CNTRL_STATE_CCW:
             // TODO: Set motor to full CCW
             break;
 

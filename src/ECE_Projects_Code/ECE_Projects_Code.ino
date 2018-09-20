@@ -1,4 +1,5 @@
 #include "lck_cntrlr.h"
+#include "mtr_cntrl.h"
 
 
 /******************************************************************************
@@ -7,6 +8,9 @@
 
 void setup()
 {
+	// Initialize motor control driver
+    mtr_cntrl_init();
+
     // Initialize lock controller
     lck_cntrlr_init();
 }

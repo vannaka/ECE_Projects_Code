@@ -4,9 +4,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /******************************************************************************
 *                                   Types
 ******************************************************************************/
+
 typedef uint8_t mtr_cntrl_state_t;
 enum
     {
@@ -15,13 +20,20 @@ enum
     MTR_CNTRL_STATE_STOPPED
     };
 
+
 /******************************************************************************
 *                                 Procedures
 ******************************************************************************/
+
 void mtr_cntrl_init( void );
 void mtr_cntrl_set_state( mtr_cntrl_state_t state );
 mtr_cntrl_state_t mtr_cntrl_get_state( void );
 bool mtr_cntrl_get_limit_cw( void );
 bool mtr_cntrl_get_limit_ccw( void );
+
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

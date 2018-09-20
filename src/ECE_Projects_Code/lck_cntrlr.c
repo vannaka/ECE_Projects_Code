@@ -7,14 +7,14 @@
 *                                   Types
 ******************************************************************************/
 
-typedef uint8 intrnl_state_t;
+typedef uint8_t intrnl_state_t;
 enum
     {
     UNLOCKED,
     UNLOCKED_TO_LOCKED,
     LOCKED,
     LOCKED_TO_UNLOCKED   
-    }
+    };
 
 
 /******************************************************************************
@@ -23,7 +23,6 @@ enum
 
 // State machine control variables
 static intrnl_state_t intrnl_curr_state;
-//static intrnl_state_t intrnl_next_state;
 
 // Public lock state
 static lck_cntrlr_state_t lck_curr_state;
@@ -36,10 +35,7 @@ static lck_cntrlr_state_t lck_next_state;
 
 void lck_cntrlr_init( void )
 {
-    mtr_cntrl_init();
-
     intrnl_curr_state = UNLOCKED;
-    intrnl_next_state = UNLOCKED;
     lck_next_state = LCK_CNTRLR_STATE_UNLOCKED;
 }
 
