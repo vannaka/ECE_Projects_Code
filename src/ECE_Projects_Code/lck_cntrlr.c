@@ -9,6 +9,7 @@
 
 #define TO_LOCKED_MOTOR_TIME 1000
 #define TO_UNLOCKED_MOTOR_TIME 1000
+#define UNLOCK_STATE_TIMEOUT 5000
 
 /******************************************************************************
 *                                   Types
@@ -29,8 +30,8 @@ enum
 ******************************************************************************/
 
 // State machine control variables
-static intrnl_state_t intrnl_curr_state;
-static intrnl_state_t intrnl_prev_state;
+static intrnl_state_t curr_state;
+static intrnl_state_t prev_state;
 
 // Public lock state
 static lck_cntrlr_state_t lck_curr_state;
@@ -56,15 +57,26 @@ void lck_cntrlr_init( void )
 
 void lck_cntrlr_proc( void )
 {
-    // TODO: Update timer here
+    // Update timer
+    elaps_time = millis() - start_time;
 
     // State machine for the lock
     switch( curr_state )
         {
         // Lock is stationary in the unlocked position
         case UNLOCKED:
-            // Exit if next state in locked state
-            if( LCK_CNTRLR_STATE_LOCKED == lck_next_state )
+            // This is true for the first loop that we're in this state for
+            if( prev_state != curr_state )
+            {
+                // Reset timer here.
+                start_time = millis();
+
+                prev_state = curr_state;
+            }
+
+            // Exit if next state in locked state or the timeout has occured
+            if( ( UNLOCK_STATE_TIMEOUT <= elaps_time        ) 
+             || ( LCK_CNTRLR_STATE_LOCKED == lck_next_state ) )
                 {
                 // Turn on motor.
                 mtr_cntrl_set_state( MTR_CNTRL_STATE_CW );
@@ -77,7 +89,7 @@ void lck_cntrlr_proc( void )
 
         // Lock is in transit to the locked position
         case UNLOCKED_TO_LOCKED:
-            // This executes on the first loop we're in this state
+            // This is true for the first loop that we're in this state for
             if( prev_state != curr_state )
             {
                 // Reset timer here.
@@ -85,9 +97,6 @@ void lck_cntrlr_proc( void )
 
                 prev_state = curr_state;
             }
-
-            // Update timer
-            elaps_time = millis() - start_time;
 
             // If motor is at end of movement disable motor and go to next state
             if( TO_LOCKED_MOTOR_TIME <= elaps_time )
@@ -114,7 +123,7 @@ void lck_cntrlr_proc( void )
 
         // Lock is in transit to the unlocked position
         case LOCKED_TO_UNLOCKED:
-            // This executes on the first loop we're in this state
+            // This is true for the first loop that we're in this state for
             if( prev_state != curr_state )
             {
                 // Reset timer here.
@@ -122,9 +131,6 @@ void lck_cntrlr_proc( void )
 
                 prev_state = curr_state;
             }
-
-            // Update timer
-            elaps_time = millis() - start_time;
 
             // If motor is at end of movement disable motor and go to next state
             if( TO_UNLOCKED_MOTOR_TIME <= elaps_time )

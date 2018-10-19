@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include "rf_drvr.h"
 #include "mtr_cntrl.h"
 #include "lck_cntrlr.h"
@@ -15,7 +17,11 @@ void setup()
 
 void loop() 
 {
-	
-	remt_recvr_proc();
+	// Unlock the lock
+	if( rf_drvr_btn_A_pressed() )
+		{
+		lck_cntrlr_set_state( LCK_CNTRLR_STATE_UNLOCKED );
+		}
+
     lck_cntrlr_proc();
 }
