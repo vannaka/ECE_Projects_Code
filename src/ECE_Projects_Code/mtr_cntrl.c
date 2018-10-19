@@ -1,17 +1,22 @@
 #include "mtr_cntrl.h"
 
+
 /******************************************************************************
 *                               Global Variables
 ******************************************************************************/
+
 static mtr_cntrl_state_t mtr_state;
+
 
 /******************************************************************************
 *                                 Procedures
 ******************************************************************************/
+
 void mtr_cntrl_init( void )
 {
     mtr_state = MTR_CNTRL_STATE_STOPPED;
 }
+
 
 void mtr_cntrl_set_state( mtr_cntrl_state_t state )
 {
@@ -33,16 +38,19 @@ void mtr_cntrl_set_state( mtr_cntrl_state_t state )
         }
 }
 
+
 mtr_cntrl_state_t mtr_cntrl_get_state( void )
 {
   return mtr_state;
 }
+
 
 bool mtr_cntrl_get_limit_cw( void )
 {
     // TODO: read the limit pin and return true if tripped
     return true;
 }
+
 
 bool mtr_cntrl_get_limit_ccw( void )
 {

@@ -1,6 +1,6 @@
-#include "lck_cntrlr.h"
+#include "rf_drvr.h"
 #include "mtr_cntrl.h"
-
+#include "lck_cntrlr.h"
 
 /******************************************************************************
 *                                 Procedures
@@ -8,14 +8,14 @@
 
 void setup()
 {
-	// Initialize motor control driver
+	rf_drvr_init();
     mtr_cntrl_init();
-
-    // Initialize lock controller
     lck_cntrlr_init();
 }
 
 void loop() 
 {
+	
+	remt_recvr_proc();
     lck_cntrlr_proc();
 }

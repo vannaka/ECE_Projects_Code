@@ -39,6 +39,7 @@ void lck_cntrlr_init( void )
     lck_next_state = LCK_CNTRLR_STATE_UNLOCKED;
 }
 
+
 void lck_cntrlr_proc( void )
 {
     // State machine for the lock
@@ -97,10 +98,12 @@ void lck_cntrlr_proc( void )
         }
 }
 
+
 void lck_cntrlr_set_state( lck_cntrlr_state_t state )
 {
     lck_next_state = state;
 }
+
 
 lck_cntrlr_state_t lck_cntrlr_get_state( void )
 {

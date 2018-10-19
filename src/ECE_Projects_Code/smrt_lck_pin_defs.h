@@ -10,4 +10,6 @@
 #define MTR_CNTRL_LIMIT_CW_PIN 2
 #define MTR_CNTRL_LIMIT_CCW_PIN 3
 
+#define RF_DRVR_BTN_A_PIN 2 // Only pins 2, 3 support interupts
+
 #endif
