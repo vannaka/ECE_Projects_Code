@@ -14,6 +14,7 @@
 ******************************************************************************/
 
 static volatile bool btn_A_pressed;
+static volatile bool isr_gate;
 
 
 /******************************************************************************
@@ -27,11 +28,15 @@ static void btn_A_isr( void );
 *                                 Procedures
 ******************************************************************************/
 
-
 void rf_drvr_init( void )
 {
+	btn_A_pressed = false;
+	isr_gate = false;
+
 	pinMode( RF_DRVR_BTN_A_PIN, INPUT );
-	attachInterrupt( digitalPinToInterrupt( RF_DRVR_BTN_A_PIN ), btn_A_isr, RISING );
+
+	// Attach interupt service routine.
+	attachInterrupt( digitalPinToInterrupt( RF_DRVR_BTN_A_PIN ), btn_A_isr, CHANGE );
 }
 
 
@@ -45,5 +50,16 @@ bool rf_drvr_btn_A_pressed( void )
 
 void btn_A_isr( void )
 {
-	btn_A_pressed = true;
+	// isr_gate is to prevent proccessing interupts that were flaged before 
+	// 	the isr was attached. I could clear the flag in a register somewhere
+	//  before attaching the isr but I would have to find the data sheet for 
+	//  the microprocessor and that's too much work.
+	if( isr_gate )
+	{
+		btn_A_pressed = true;
+	}
+	else
+	{
+		isr_gate = true;
+	}
 }

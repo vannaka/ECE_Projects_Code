@@ -17,9 +17,9 @@ typedef uint8_t lck_cntrlr_state_t;
 enum
     {
     LCK_CNTRLR_STATE_LOCKED,
-    LCK_CNTRLR_STATE_UNLOCKED
+    LCK_CNTRLR_STATE_UNLOCKED,
+    LCK_CNTRLR_STATE_HOLD
     };
-
 
 /******************************************************************************
 *                                 Procedures

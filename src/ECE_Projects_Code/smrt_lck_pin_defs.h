@@ -6,10 +6,13 @@
 *                               Global Constants
 ******************************************************************************/
 
-#define MTR_CNTRL_MOTOR_PIN 1
+#define MTR_CNTRL_MOTOR_CW_PIN 31
+#define MTR_CNTRL_MOTOR_CCW_PIN 33
 #define MTR_CNTRL_LIMIT_CW_PIN 2
 #define MTR_CNTRL_LIMIT_CCW_PIN 3
 
-#define RF_DRVR_BTN_A_PIN 2 // Only pins 2, 3 support interupts
+// Uno: pins 2, 3
+// Due: All digital pins
+#define RF_DRVR_BTN_A_PIN 53
 
 #endif

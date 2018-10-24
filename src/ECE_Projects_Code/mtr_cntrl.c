@@ -1,4 +1,7 @@
+#include <Arduino.h>
+
 #include "mtr_cntrl.h"
+#include "smrt_lck_pin_defs.h"
 
 
 /******************************************************************************
@@ -14,6 +17,9 @@ static mtr_cntrl_state_t mtr_state;
 
 void mtr_cntrl_init( void )
 {
+    pinMode( MTR_CNTRL_MOTOR_CW_PIN, OUTPUT );
+    pinMode( MTR_CNTRL_MOTOR_CCW_PIN, OUTPUT );
+
     mtr_state = MTR_CNTRL_STATE_STOPPED;
 }
 
@@ -26,14 +32,20 @@ void mtr_cntrl_set_state( mtr_cntrl_state_t state )
         {
         case MTR_CNTRL_STATE_CW:
             // TODO: Set motor to CW
+            digitalWrite( MTR_CNTRL_MOTOR_CW_PIN, HIGH );
+            digitalWrite( MTR_CNTRL_MOTOR_CCW_PIN, LOW );
             break;
 
         case MTR_CNTRL_STATE_CCW:
-            // TODO: Set motor to full CCW
+            // TODO: Set motor to CCW
+            digitalWrite( MTR_CNTRL_MOTOR_CW_PIN, LOW );
+            digitalWrite( MTR_CNTRL_MOTOR_CCW_PIN, HIGH );
             break;
 
         case MTR_CNTRL_STATE_STOPPED:
             // TODO: Set motor to off
+            digitalWrite( MTR_CNTRL_MOTOR_CW_PIN, LOW );
+            digitalWrite( MTR_CNTRL_MOTOR_CCW_PIN, LOW );
             break;
         }
 }

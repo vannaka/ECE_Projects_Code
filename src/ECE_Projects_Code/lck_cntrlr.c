@@ -1,3 +1,4 @@
+#include <Arduino.h>
 
 #include "lck_cntrlr.h"
 #include "mtr_cntrl.h"
@@ -7,9 +8,9 @@
 *                               Global Constats
 ******************************************************************************/
 
-#define TO_LOCKED_MOTOR_TIME 1000
-#define TO_UNLOCKED_MOTOR_TIME 1000
-#define UNLOCK_STATE_TIMEOUT 5000
+#define TO_LOCKED_MOTOR_TIME 3000
+#define TO_UNLOCKED_MOTOR_TIME 3000
+#define UNLOCK_STATE_TIMEOUT 10000
 
 /******************************************************************************
 *                                   Types
@@ -49,9 +50,11 @@ static uint32_t elaps_time;
 
 void lck_cntrlr_init( void )
 {
-    prev_state = UNLOCKED;
-    curr_state = UNLOCKED;
-    lck_next_state = LCK_CNTRLR_STATE_UNLOCKED;
+    prev_state = LOCKED;
+    curr_state = LOCKED;
+    lck_next_state = LCK_CNTRLR_STATE_LOCKED;
+
+    start_time = millis();
 }
 
 
@@ -67,17 +70,21 @@ void lck_cntrlr_proc( void )
         case UNLOCKED:
             // This is true for the first loop that we're in this state for
             if( prev_state != curr_state )
-            {
+                {
                 // Reset timer here.
                 start_time = millis();
+                elaps_time = 0;
 
                 prev_state = curr_state;
-            }
+                }
 
             // Exit if next state in locked state or the timeout has occured
             if( ( UNLOCK_STATE_TIMEOUT <= elaps_time        ) 
              || ( LCK_CNTRLR_STATE_LOCKED == lck_next_state ) )
                 {
+                // Reset next state flag
+                lck_next_state = LCK_CNTRLR_STATE_HOLD;
+
                 // Turn on motor.
                 mtr_cntrl_set_state( MTR_CNTRL_STATE_CW );
 
@@ -91,12 +98,13 @@ void lck_cntrlr_proc( void )
         case UNLOCKED_TO_LOCKED:
             // This is true for the first loop that we're in this state for
             if( prev_state != curr_state )
-            {
+                {
                 // Reset timer here.
                 start_time = millis();
+                elaps_time = 0;
 
                 prev_state = curr_state;
-            }
+                }
 
             // If motor is at end of movement disable motor and go to next state
             if( TO_LOCKED_MOTOR_TIME <= elaps_time )
@@ -104,20 +112,25 @@ void lck_cntrlr_proc( void )
                 mtr_cntrl_set_state( MTR_CNTRL_STATE_STOPPED );
 
                 // Go to next state.
+                prev_state = curr_state;
                 curr_state = LOCKED;
                 }
             break;
 
         // Lock is stationary in the locked position
         case LOCKED:
-            // Exit if next state in unlocked state
+            // Exit if next state is unlocked state
             if( LCK_CNTRLR_STATE_UNLOCKED == lck_next_state )
                 {
+                // Reset next state flag
+                lck_next_state = LCK_CNTRLR_STATE_HOLD;
+
+                // Turn motor on
                 mtr_cntrl_set_state( MTR_CNTRL_STATE_CCW );
 
                 // Go to next state.
                 prev_state = curr_state;
-                curr_state = UNLOCKED_TO_LOCKED;
+                curr_state = LOCKED_TO_UNLOCKED;
                 }
             break;
 
@@ -125,12 +138,13 @@ void lck_cntrlr_proc( void )
         case LOCKED_TO_UNLOCKED:
             // This is true for the first loop that we're in this state for
             if( prev_state != curr_state )
-            {
+                {
                 // Reset timer here.
                 start_time = millis();
+                elaps_time = 0;
 
                 prev_state = curr_state;
-            }
+                }
 
             // If motor is at end of movement disable motor and go to next state
             if( TO_UNLOCKED_MOTOR_TIME <= elaps_time )
@@ -138,6 +152,7 @@ void lck_cntrlr_proc( void )
                 mtr_cntrl_set_state( MTR_CNTRL_STATE_STOPPED );
 
                 // Go to next state.
+                prev_state = curr_state;
                 curr_state = UNLOCKED;
                 }
             break;
@@ -155,4 +170,3 @@ lck_cntrlr_state_t lck_cntrlr_get_state( void )
 {
     return lck_curr_state;
 }
-

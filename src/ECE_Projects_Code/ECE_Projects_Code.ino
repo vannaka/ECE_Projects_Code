@@ -10,9 +10,11 @@
 
 void setup()
 {
-	rf_drvr_init();
     mtr_cntrl_init();
     lck_cntrlr_init();
+    rf_drvr_init();
+
+    Serial.begin( 9600 );
 }
 
 void loop() 
