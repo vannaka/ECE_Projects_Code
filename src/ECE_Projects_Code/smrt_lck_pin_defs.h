@@ -11,6 +11,7 @@
 #define MTR_CNTRL_LIMIT_CW_PIN 2
 #define MTR_CNTRL_LIMIT_CCW_PIN 3
 
+// Pins with interrupt support
 // Uno: pins 2, 3
 // Due: All digital pins
 #define RF_DRVR_BTN_A_PIN 53
