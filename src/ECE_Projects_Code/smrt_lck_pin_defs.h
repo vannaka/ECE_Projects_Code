@@ -16,6 +16,7 @@
 // Pins with interrupt support
 // Uno: pins 2, 3
 // Due: All digital pins
+#define PZ_DRVR_PIN		  54
 #define RF_DRVR_BTN_A_PIN 2
 
 #endif

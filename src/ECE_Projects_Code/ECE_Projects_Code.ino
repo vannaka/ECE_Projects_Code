@@ -13,6 +13,7 @@ void setup()
     mtr_cntrl_init();
     lck_cntrlr_init();
     rf_drvr_init();
+	piezo_drvr_init();
 
     Serial.begin( 9600 );
 }
