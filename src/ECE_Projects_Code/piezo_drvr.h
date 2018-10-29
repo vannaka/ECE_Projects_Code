@@ -7,7 +7,7 @@
 /****************************************************************
  * 						 Global Constants
  ***************************************************************/
-#define KNOCK_COUNT 5
+#define KNOCK_COUNT 3
 #define KNOCK_TIMEOUT 3000
 #define KNOCK_THRESHOLD 100
 

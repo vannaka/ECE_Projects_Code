@@ -12,7 +12,11 @@
 *                               Global Variables
 ******************************************************************************/
 static volatile bool knock_detect;
-uint8_t knock_count = 0;
+uint8_t knock_counter = 0;
+uint32_t start_time;
+uint16_t reading = 0;
+bool reset_knock = true;
+
 
 /******************************************************************************
 *                               Local Procedures
@@ -40,36 +44,37 @@ bool pz_drvr_knock_detect( void )
 
 void pz_drvr_proc( void )
 {
-	uint16_t reading = pz_drvr_get_snsr_reading();
-	uint32_t start_time = millis();
-	knock_count = 0;
-
-	while( knock_count < KNOCK_COUNT )
+	reading = pz_drvr_get_snsr_reading();
+	
+	if( reset_knock )
 	{
-		//if a knock has occured increment counter 
-		if( reading >= KNOCK_THRESHOLD )
-		{
-			//Wait for knock to finish so we dont count it twice 
-			while( pz_drvr_get_snsr_reading() >= KNOCK_THRESHOLD ){}
-			knock_count++;
-			start_time = millis();
-		}
-		
-		else if( ( millis() - start_time ) > KNOCK_TIMEOUT )
-		{
-			//if more than three second has 
-			break;
-		}
+		start_time = millis();
+		knock_counter = 0;
+		reset_knock = false;
+	}
 
-		delay( 100 );
+		//if a knock has occured increment counter 
+	if( reading >= KNOCK_THRESHOLD )
+	{
+		knock_counter++;
+		start_time = millis();
+	}
+		
+	else if( ( millis() - start_time ) > KNOCK_TIMEOUT )
+	{
+		//if more than three second has passed reset 
+		reset_knock = true;
 	}
 
 	//if the counter has reached five set the knock detect flag 
-	if( knock_count >= 5 )
+	if( knock_count >= KNOCK_COUNT )
 	{
 		knock_detect = true;
 	}
 	
+	//Short delay so we dont overload the serial port buffer
+	delay( 50 );
+
 } /* pz_drvr_proc */
 
 bool pz_drvr_sts_rtn( void )
