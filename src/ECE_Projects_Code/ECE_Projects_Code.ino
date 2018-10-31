@@ -21,16 +21,10 @@ void setup()
 void loop() 
 {
 	// Unlock the lock
-	if( rf_drvr_btn_A_pressed() )
+	if( rf_drvr_btn_A_pressed() || pz_drvr_knock_detect() )
 		{
 		lck_cntrlr_set_state( LCK_CNTRLR_STATE_UNLOCKED );
 		}
-
-	if( pz_drvr_sts_rtn() )
-	{
-		 lck_cntrlr_set_state( LCK_CNTRLR_STATE_UNLOCKED );
-		 pz_drvr_knock_detect();
-	}
 
     lck_cntrlr_proc();
 	pz_drvr_proc();
