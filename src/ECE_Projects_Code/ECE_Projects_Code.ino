@@ -3,6 +3,7 @@
 #include "rf_drvr.h"
 #include "mtr_cntrl.h"
 #include "lck_cntrlr.h"
+#include "pz_drvr.h"
 
 /******************************************************************************
 *                                 Procedures
@@ -13,9 +14,7 @@ void setup()
     mtr_cntrl_init();
     lck_cntrlr_init();
     rf_drvr_init();
-	piezo_drvr_init();
-
-    Serial.begin( 9600 );
+	pz_drvr_init();
 }
 
 void loop() 

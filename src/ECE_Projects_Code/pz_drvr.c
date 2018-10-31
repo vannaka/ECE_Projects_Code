@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "piezo_drvr.h"
+#include "pz_drvr.h"
 #include "smrt_lck_pin_defs.h"
 
 
@@ -11,6 +11,7 @@
 #define KNOCK_COUNT 3
 #define KNOCK_TIMEOUT 3000
 #define PROC_PERIOD 100
+#define KNOCK_THRESHOLD 500
 
 
 /******************************************************************************
@@ -25,9 +26,8 @@ static bool knock_detect;
 uint8_t knock_counter = 0;
 
 uint16_t reading = 0;
-bool reset_knock = true;
 
-// Timers
+// Timer stuff
 uint32_t curr_time;
 uint32_t last_knock_time;
 uint32_t last_proc_time;
@@ -46,7 +46,9 @@ static uint16_t get_snsr_reading( void );
 void pz_drvr_init( void )
 {
 	knock_detect = false;
-	last_read_time = 0;
+
+	// Set to 0 so proc will run on first call.
+	last_proc_time = 0;
 
 	pinMode( PZ_DRVR_PIN, INPUT );
 
