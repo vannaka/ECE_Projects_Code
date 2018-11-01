@@ -11,7 +11,7 @@
 #define KNOCK_COUNT 3
 #define KNOCK_TIMEOUT 3000
 #define PROC_PERIOD 100
-#define KNOCK_THRESHOLD 500
+#define KNOCK_THRESHOLD 80
 
 
 /******************************************************************************
@@ -23,14 +23,14 @@
 *                               Global Variables
 ******************************************************************************/
 static bool knock_detect;
-uint8_t knock_counter = 0;
+static uint8_t knock_counter = 0;
 
-uint16_t reading = 0;
+static uint16_t reading = 0;
 
 // Timer stuff
-uint32_t curr_time;
-uint32_t last_knock_time;
-uint32_t last_proc_time;
+static uint32_t curr_time;
+static uint32_t last_knock_time;
+static uint32_t last_proc_time;
 
 /******************************************************************************
 *                               Local Procedures
@@ -103,3 +103,13 @@ uint16_t get_snsr_reading( void )
 {
 	return analogRead( PZ_DRVR_PIN );
 } /* pz_drvr_get_snsr_reading */
+
+int get_knock_count( void )
+{
+	return knock_counter;
+}
+
+int get_piezo_val( void )
+{
+	return reading;
+}

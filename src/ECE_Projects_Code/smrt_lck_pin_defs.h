@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #ifndef SMRT_LCK_PIN_DEFS
 #define SMRT_LCK_PIN_DEFS
 
@@ -16,7 +18,7 @@
 // Pins with interrupt support
 // Uno: pins 2, 3
 // Due: All digital pins
-#define PZ_DRVR_PIN		  54
+#define PZ_DRVR_PIN		  A1
 #define RF_DRVR_BTN_A_PIN 2
 
 #endif

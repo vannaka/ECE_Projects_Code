@@ -8,22 +8,22 @@
 *                               Global Constats
 ******************************************************************************/
 
-#define TO_LOCKED_MOTOR_TIME 3000
-#define TO_UNLOCKED_MOTOR_TIME 3000
-#define UNLOCK_STATE_TIMEOUT 10000
+#define TO_LOCKED_MOTOR_TIME 2000
+#define TO_UNLOCKED_MOTOR_TIME 2000
+#define UNLOCK_STATE_TIMEOUT 5000
 
 /******************************************************************************
 *                                   Types
 ******************************************************************************/
 
-typedef uint8_t intrnl_state_t;
-enum
-    {
-    UNLOCKED,
-    UNLOCKED_TO_LOCKED,
-    LOCKED,
-    LOCKED_TO_UNLOCKED   
-    };
+// typedef uint8_t intrnl_state_t;
+// enum
+//     {
+//     UNLOCKED,
+//     UNLOCKED_TO_LOCKED,
+//     LOCKED,
+//     LOCKED_TO_UNLOCKED   
+//     };
 
 
 /******************************************************************************
@@ -47,6 +47,12 @@ static uint32_t elaps_time;
 /******************************************************************************
 *                                 Procedures
 ******************************************************************************/
+
+intrnl_state_t get_state( void )
+{
+    return curr_state;
+}
+
 
 void lck_cntrlr_init( void )
 {
@@ -107,7 +113,8 @@ void lck_cntrlr_proc( void )
                 }
 
             // If motor is at end of movement disable motor and go to next state
-            if( TO_LOCKED_MOTOR_TIME <= elaps_time )
+            //if( ( TO_LOCKED_MOTOR_TIME <= elaps_time ) ||
+            if( ( mtr_cntrl_get_limit_lock()         ) )
                 {
                 mtr_cntrl_set_state( MTR_CNTRL_STATE_STOPPED );
 
@@ -147,7 +154,8 @@ void lck_cntrlr_proc( void )
                 }
 
             // If motor is at end of movement disable motor and go to next state
-            if( TO_UNLOCKED_MOTOR_TIME <= elaps_time )
+            // if( ( TO_UNLOCKED_MOTOR_TIME <= elaps_time ) ||
+            if( ( mtr_cntrl_get_limit_unlock()         ) )
                 {
                 mtr_cntrl_set_state( MTR_CNTRL_STATE_STOPPED );
 

@@ -22,7 +22,6 @@ void pz_drvr_init( void );
 void pz_drvr_proc( void );
 bool pz_drvr_knock_detect();
 
-
 #ifdef __cplusplus
 } // extern "C"
 #endif

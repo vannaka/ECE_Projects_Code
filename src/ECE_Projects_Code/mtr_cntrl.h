@@ -30,7 +30,10 @@ void mtr_cntrl_init( void );
 void mtr_cntrl_proc( void );
 void mtr_cntrl_set_state( mtr_cntrl_state_t state );
 mtr_cntrl_state_t mtr_cntrl_get_state( void );
-bool mtr_cntrl_get_limit( void );
+bool mtr_cntrl_get_limit_lock( void );
+bool mtr_cntrl_get_limit_unlock( void );
+
+double get_sensor_voltage( void );
 
 
 #ifdef __cplusplus
