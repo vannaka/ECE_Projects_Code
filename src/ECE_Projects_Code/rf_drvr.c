@@ -28,6 +28,10 @@ static void btn_A_isr( void );
 *                                 Procedures
 ******************************************************************************/
 
+/**********************************************************
+*   rf_drvr_init
+*       Init the rf driver. Setup pins and vars.
+**********************************************************/
 void rf_drvr_init( void )
 {
 	btn_A_pressed = false;
@@ -40,6 +44,11 @@ void rf_drvr_init( void )
 }
 
 
+/**********************************************************
+*   rf_drvr_btn_A_pressed
+*		Returns whether a button has been pressed or not.
+*		Resets the button pressed flag.
+**********************************************************/
 bool rf_drvr_btn_A_pressed( void )
 {
 	bool tmp = btn_A_pressed;
@@ -48,6 +57,10 @@ bool rf_drvr_btn_A_pressed( void )
 }
 
 
+/**********************************************************
+*   btn_A_isr
+*		Interrupt service routine for the button.
+**********************************************************/
 void btn_A_isr( void )
 {
 	// isr_gate is to prevent proccessing interupts that were flaged before 

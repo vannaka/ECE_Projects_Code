@@ -7,8 +7,13 @@
 /******************************************************************************
 *                               Global Constats
 ******************************************************************************/
-#define LIMIT_THRESH_UNLOCK 16.0
-#define LIMIT_THRESH_LOCK 35.0
+
+#define LIMIT_UNLOCK_THRESH_HI  20.0
+#define LIMIT_UNLOCK_THRESH_LOW 15.0
+
+#define LIMIT_LOCK_THRESH_HI    80.0
+#define LIMIT_LOCK_THRESH_LOW   65.0
+
 
 /******************************************************************************
 *                               Global Variables
@@ -17,6 +22,7 @@
 static mtr_cntrl_state_t mtr_state;
 static bool at_limit;
 static double sensor_volt;
+
 
 /******************************************************************************
 *                               Local Procedures
@@ -30,11 +36,10 @@ static double update_sensor_voltage( void );
 *                                 Procedures
 ******************************************************************************/
 
-double get_sensor_voltage( void )
-{
-    return sensor_volt;
-}
-
+/**********************************************************
+*   mtr_cntrl_init
+*       Init the motor control module. Setup pins and vars.
+**********************************************************/
 void mtr_cntrl_init( void )
 {
     pinMode( MTR_CNTRL_LEFT_HIGH_SIDE, OUTPUT );
@@ -49,6 +54,11 @@ void mtr_cntrl_init( void )
     at_limit = false;
 }
 
+
+/**********************************************************
+*   mtr_cntrl_proc
+*       Process function. Updates sensor voltage reading.
+**********************************************************/
 void mtr_cntrl_proc( void )
 {
     // Read limit sensor voltage
@@ -56,6 +66,10 @@ void mtr_cntrl_proc( void )
 }
 
 
+/**********************************************************
+*   mtr_cntrl_set_state
+*       Set the state of the motor.
+**********************************************************/
 void mtr_cntrl_set_state( mtr_cntrl_state_t state )
 {
     mtr_state = state;
@@ -86,15 +100,24 @@ void mtr_cntrl_set_state( mtr_cntrl_state_t state )
 }
 
 
+/**********************************************************
+*   mtr_cntrl_get_state
+*       Get the state of the motor.
+**********************************************************/
 mtr_cntrl_state_t mtr_cntrl_get_state( void )
 {
   return mtr_state;
 }
 
 
+/**********************************************************
+*   mtr_cntrl_get_limit_lock
+*       Check the limit sensor.
+**********************************************************/
 bool mtr_cntrl_get_limit_lock( void )
 {
-    if( 36 <= sensor_volt && 41 >= sensor_volt  )
+    if( ( LIMIT_LOCK_THRESH_LOW <= sensor_volt ) 
+     && ( LIMIT_LOCK_THRESH_HI >= sensor_volt  ) )
         {
         return true;
         }
@@ -105,9 +128,14 @@ bool mtr_cntrl_get_limit_lock( void )
 }
 
 
+/**********************************************************
+*   mtr_cntrl_get_limit_unlock
+*       Check the limit sensor.
+**********************************************************/
 bool mtr_cntrl_get_limit_unlock( void )
 {
-    if( 15 <= sensor_volt && 20 >= sensor_volt )
+    if( ( LIMIT_UNLOCK_THRESH_LOW <= sensor_volt )
+     && ( LIMIT_UNLOCK_THRESH_HI >= sensor_volt  ) )
         {
         return true;
         }
@@ -118,6 +146,12 @@ bool mtr_cntrl_get_limit_unlock( void )
 }
 
 
+/**********************************************************
+*   update_sensor_voltage
+*       Read the limit sensor voltage. The returned voltage
+*       is adjusted for the reference voltage of the 
+*       arduino.
+**********************************************************/
 double update_sensor_voltage( void )
 {
     double vcc = readVCC();
@@ -126,6 +160,11 @@ double update_sensor_voltage( void )
     return ( (double)adc_val / 1024.0 ) * vcc; 
 }
 
+
+/**********************************************************
+*   readVCC
+*       Get the reference voltge of the arduino.
+**********************************************************/
 double readVCC( void )
 {
     long result;

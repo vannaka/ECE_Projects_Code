@@ -43,6 +43,10 @@ static uint16_t get_snsr_reading( void );
 *                                 Procedures
 ******************************************************************************/
 
+/**********************************************************
+*   pz_drvr_init
+*       Init the piezo driver. Setup pins and vars.
+**********************************************************/
 void pz_drvr_init( void )
 {
 	knock_detect = false;
@@ -55,6 +59,12 @@ void pz_drvr_init( void )
 
 } /*pz_drvr_init */
 
+
+/**********************************************************
+*   pz_drvr_knock_detect
+*       Returns whether a knock sequence has been detected.
+*		Resets the knock_detect flag on function call.
+**********************************************************/
 bool pz_drvr_knock_detect( void )
 {
 	bool tmp = knock_detect;
@@ -63,10 +73,17 @@ bool pz_drvr_knock_detect( void )
 
 } /* pz_drvr_knock_detect */
 
+
+/**********************************************************
+*   pz_drvr_proc
+*       Process function. Handles the state of the knock
+*		sequence.
+**********************************************************/
 void pz_drvr_proc( void )
 {
 	curr_time = millis();
 	
+	// 100ms period
 	if( PROC_PERIOD <= ( curr_time - last_proc_time ) )
 		{
 		// Set last proc time
@@ -99,17 +116,13 @@ void pz_drvr_proc( void )
 
 } /* pz_drvr_proc */
 
+
+/**********************************************************
+*   get_snsr_reading
+*		Reads the piezo sensor pin.
+**********************************************************/
 uint16_t get_snsr_reading( void )
 {
 	return analogRead( PZ_DRVR_PIN );
 } /* pz_drvr_get_snsr_reading */
 
-int get_knock_count( void )
-{
-	return knock_counter;
-}
-
-int get_piezo_val( void )
-{
-	return reading;
-}

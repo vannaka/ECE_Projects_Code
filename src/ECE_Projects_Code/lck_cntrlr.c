@@ -16,14 +16,18 @@
 *                                   Types
 ******************************************************************************/
 
-// typedef uint8_t intrnl_state_t;
-// enum
-//     {
-//     UNLOCKED,
-//     UNLOCKED_TO_LOCKED,
-//     LOCKED,
-//     LOCKED_TO_UNLOCKED   
-//     };
+/**********************************************************
+*   intrnl_state_t
+*       States for the state machine.
+**********************************************************/
+typedef uint8_t intrnl_state_t;
+enum
+    {
+    UNLOCKED,
+    UNLOCKED_TO_LOCKED,
+    LOCKED,
+    LOCKED_TO_UNLOCKED   
+    };
 
 
 /******************************************************************************
@@ -48,12 +52,10 @@ static uint32_t elaps_time;
 *                                 Procedures
 ******************************************************************************/
 
-intrnl_state_t get_state( void )
-{
-    return curr_state;
-}
-
-
+/**********************************************************
+*   lck_cntrlr_init
+*       Init the lock controller
+**********************************************************/
 void lck_cntrlr_init( void )
 {
     prev_state = LOCKED;
@@ -64,6 +66,11 @@ void lck_cntrlr_init( void )
 }
 
 
+/**********************************************************
+*   lck_cntrlr_proc
+*       Process function. Contains the state macine for
+*       the lock controller.
+**********************************************************/
 void lck_cntrlr_proc( void )
 {
     // Update timer
@@ -168,12 +175,21 @@ void lck_cntrlr_proc( void )
 }
 
 
+/**********************************************************
+*   lck_cntrlr_set_state
+*       Set the state of the lock; Locked or Unlocked.
+**********************************************************/
 void lck_cntrlr_set_state( lck_cntrlr_state_t state )
 {
     lck_next_state = state;
 }
 
 
+/**********************************************************
+*   lck_cntrlr_get_state
+*       Get the current state of the lock; Locked or 
+*       Unlocked.
+**********************************************************/
 lck_cntrlr_state_t lck_cntrlr_get_state( void )
 {
     return lck_curr_state;
